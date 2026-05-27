@@ -4,11 +4,15 @@ import './styles/main.css';
 import App from './App.tsx';
 import { BrowserRouter } from 'react-router-dom';
 import './apis/core/interceptor.ts';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './apis/lib/queryClient.ts';
 
 createRoot(document.getElementById('root')!).render(
-  <BrowserRouter>
-    <StrictMode>
-      <App />
-    </StrictMode>
-  </BrowserRouter>,
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
+      <StrictMode>
+        <App />
+      </StrictMode>
+    </BrowserRouter>
+  </QueryClientProvider>,
 );
