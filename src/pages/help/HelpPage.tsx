@@ -1,5 +1,6 @@
 import Button from '@/components/common/Button';
 import Input from '@/components/common/Input';
+import { usePlaceSearch } from '@/hooks/usePlaceSearch';
 import { loadKakaoScript } from '@/utils/loadMap';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
@@ -16,36 +17,9 @@ const HelpPage = () => {
 
   const [keyword, setKeyword] = useState('');
 
-  const [places, setPlaces] = useState<kakao.maps.services.PlacesSearchResult>(
-    [],
-  );
-
   const [selectedBtn, setSelectedBtn] = useState(0);
 
-  // 장소 검색
-  const searchPlaces = () => {
-    if (!keyword.trim()) return;
-
-    const ps = new window.kakao.maps.services.Places();
-
-    ps.keywordSearch(
-      keyword,
-      (
-        data: kakao.maps.services.PlacesSearchResult,
-        status: kakao.maps.services.Status,
-      ) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          setPlaces(data);
-
-          // 첫 검색 결과로 지도 이동
-          setCurrentPosition({
-            lat: Number(data[0].y),
-            lng: Number(data[0].x),
-          });
-        }
-      },
-    );
-  };
+  const { places, searchPlaces } = usePlaceSearch();
 
   useEffect(() => {
     const initMap = async () => {
@@ -95,14 +69,14 @@ const HelpPage = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') searchPlaces();
+              if (e.key === 'Enter') searchPlaces(keyword, setCurrentPosition);
             }}
           />
 
           <Button
             variant="ghost"
             className="absolute right-1 top-1/2 -translate-y-1/2"
-            onClick={searchPlaces}
+            onClick={() => searchPlaces(keyword, setCurrentPosition)}
           >
             검색
           </Button>
