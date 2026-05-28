@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '../../utils/cn';
 
-type Variant = 'primary' | 'ghost';
+type Variant = 'primary' | 'ghost' | 'outline';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -12,8 +12,9 @@ const baseStyle =
   'inline-flex items-center justify-center px-4 py-2 rounded-md text-sm transition-all duration-200 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none';
 
 const variantStyle = {
-  primary: 'bg-primary text-white shadow-sm',
+  primary: 'bg-primary text-white shadow-sm border-1 border-primary',
   ghost: 'bg-transparent text-primary ',
+  outline: 'bg-white border-1 border-lightgray',
 };
 
 const Button = ({
