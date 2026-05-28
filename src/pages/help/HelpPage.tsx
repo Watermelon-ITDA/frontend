@@ -2,8 +2,8 @@ import Button from '@/components/common/Button';
 import { usePlaceSearch } from '@/hooks/usePlaceSearch';
 import { loadKakaoScript } from '@/utils/loadMap';
 import { useEffect, useState } from 'react';
-import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import SearchBar from './components/SearchBar';
+import KakaoMap from './components/KakaoMap';
 
 const DEFAULT_POSITION = {
   lat: 37.5665,
@@ -87,29 +87,7 @@ const HelpPage = () => {
       </div>
 
       {isMapLoaded && (
-        <Map
-          center={currentPosition}
-          isPanto={true}
-          style={{
-            width: '100%',
-            height: '100%',
-          }}
-          level={3}
-        >
-          {places.length === 0 ? (
-            <MapMarker position={currentPosition} />
-          ) : (
-            places.map((place) => (
-              <MapMarker
-                key={place.id}
-                position={{
-                  lat: Number(place.y),
-                  lng: Number(place.x),
-                }}
-              />
-            ))
-          )}
-        </Map>
+        <KakaoMap currentPosition={currentPosition} places={places} />
       )}
     </main>
   );
