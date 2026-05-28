@@ -1,9 +1,9 @@
 import Button from '@/components/common/Button';
-import Input from '@/components/common/Input';
 import { usePlaceSearch } from '@/hooks/usePlaceSearch';
 import { loadKakaoScript } from '@/utils/loadMap';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
+import SearchBar from './components/SearchBar';
 
 const DEFAULT_POSITION = {
   lat: 37.5665,
@@ -62,26 +62,11 @@ const HelpPage = () => {
   return (
     <main className="relative h-screen w-full">
       <div className="absolute top-4 left-1/2 z-10 w-[90%] -translate-x-1/2 flex flex-col gap-2">
-        {/* 검색 input */}
-        <div className="relative">
-          <Input
-            placeholder="검색어를 입력해 주세요."
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') searchPlaces(keyword, setCurrentPosition);
-            }}
-          />
-
-          <Button
-            variant="ghost"
-            className="absolute right-1 top-1/2 -translate-y-1/2"
-            onClick={() => searchPlaces(keyword, setCurrentPosition)}
-          >
-            검색
-          </Button>
-        </div>
-
+        <SearchBar
+          keyword={keyword}
+          setKeyword={setKeyword}
+          onSearch={() => searchPlaces(keyword, setCurrentPosition)}
+        />
         <div className="flex gap-1">
           <Button
             variant={selectedBtn === 0 ? 'primary' : 'outline'}
