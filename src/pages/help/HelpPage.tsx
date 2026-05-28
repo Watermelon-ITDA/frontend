@@ -1,19 +1,63 @@
+import Button from '@/components/common/Button';
+import Input from '@/components/common/Input';
 import { loadKakaoScript } from '@/utils/loadMap';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
+const DEFAULT_POSITION = {
+  lat: 37.5665,
+  lng: 126.978,
+};
+
 const HelpPage = () => {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  const [currentPosition, setCurrentPosition] = useState({
-    lat: 37.5665,
-    lng: 126.978,
-  });
+  const [currentPosition, setCurrentPosition] = useState(DEFAULT_POSITION);
+
+  const [keyword, setKeyword] = useState('');
+
+  const [places, setPlaces] = useState<kakao.maps.services.PlacesSearchResult>(
+    [],
+  );
+
+  const [selectedBtn, setSelectedBtn] = useState(0);
+
+  // 장소 검색
+  const searchPlaces = () => {
+    if (!keyword.trim()) return;
+
+    const ps = new window.kakao.maps.services.Places();
+
+    ps.keywordSearch(
+      keyword,
+      (
+        data: kakao.maps.services.PlacesSearchResult,
+        status: kakao.maps.services.Status,
+      ) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          setPlaces(data);
+
+          // 첫 검색 결과로 지도 이동
+          setCurrentPosition({
+            lat: Number(data[0].y),
+            lng: Number(data[0].x),
+          });
+        }
+      },
+    );
+  };
 
   useEffect(() => {
     const initMap = async () => {
       await loadKakaoScript();
 
+      // 브라우저 GPS 지원 여부 확인
+      if (!navigator.geolocation) {
+        setIsMapLoaded(true);
+        return;
+      }
+
+      // 위치 권한 요청
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setCurrentPosition({
@@ -23,9 +67,17 @@ const HelpPage = () => {
 
           setIsMapLoaded(true);
         },
+
+        // 위치 권한 거부 or 실패
         () => {
-          // 위치 권한 거부 시 기본 위치
+          setCurrentPosition(DEFAULT_POSITION);
           setIsMapLoaded(true);
+        },
+
+        {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
         },
       );
     };
@@ -34,17 +86,70 @@ const HelpPage = () => {
   }, []);
 
   return (
-    <main className="pt-header">
+    <main className="relative h-screen w-full">
+      <div className="absolute top-4 left-1/2 z-10 w-[90%] -translate-x-1/2 flex flex-col gap-2">
+        {/* 검색 input */}
+        <div className="relative">
+          <Input
+            placeholder="검색어를 입력해 주세요."
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') searchPlaces();
+            }}
+          />
+
+          <Button
+            variant="ghost"
+            className="absolute right-1 top-1/2 -translate-y-1/2"
+            onClick={searchPlaces}
+          >
+            검색
+          </Button>
+        </div>
+
+        <div className="flex gap-1">
+          <Button
+            variant={selectedBtn === 0 ? 'primary' : 'outline'}
+            onClick={() => setSelectedBtn(0)}
+            className="rounded-full"
+          >
+            여행자
+          </Button>
+
+          <Button
+            variant={selectedBtn === 1 ? 'primary' : 'outline'}
+            onClick={() => setSelectedBtn(1)}
+            className="rounded-full"
+          >
+            동행자
+          </Button>
+        </div>
+      </div>
+
       {isMapLoaded && (
         <Map
           center={currentPosition}
+          isPanto={true}
           style={{
             width: '100%',
-            height: '100vh',
+            height: '100%',
           }}
           level={3}
         >
-          <MapMarker position={currentPosition} />
+          {places.length === 0 ? (
+            <MapMarker position={currentPosition} />
+          ) : (
+            places.map((place) => (
+              <MapMarker
+                key={place.id}
+                position={{
+                  lat: Number(place.y),
+                  lng: Number(place.x),
+                }}
+              />
+            ))
+          )}
         </Map>
       )}
     </main>
