@@ -1,8 +1,21 @@
 import Button from '@/components/common/Button';
 import googleLogo from '@/assets/icons/auth/google-color.svg';
-import { Link } from 'react-router-dom';
+import { useGoogleLogin } from '@react-oauth/google';
+import { useState } from 'react';
+import Modal from '@/components/common/Modal';
 
 const LoginPage = () => {
+  const [showErrorModal, setShowErrorModal] = useState(false);
+
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+    //   console.log(tokenResponse);
+    },
+
+    onError: () => {
+      setShowErrorModal(true);
+    },
+  });
   return (
     <>
       <main className="relative h-full px-7">
@@ -16,19 +29,36 @@ const LoginPage = () => {
           </h2>
         </div>
 
-        <div className="absolute bottom-30 left-7 right-7 grid text-center gap-4">
-          <Button className="w-full py-3 text-md flex justify-start gap-3">
+        <div className="absolute bottom-40 left-7 right-7 grid text-center gap-4">
+          <Button
+            className="w-full py-3 text-md flex justify-start gap-3"
+            onClick={() => login()}
+          >
             <img
               src={googleLogo}
               className="w-[20px] h-[20px] object-contain"
             />
             Google로 계속하기
           </Button>
-
-          <small className="text-darkgray">
-            이미 계정이 있나요? <Link to="">로그인</Link>
-          </small>
         </div>
+
+        {showErrorModal && (
+          <Modal
+            open={showErrorModal}
+            onClose={() => setShowErrorModal(false)}
+            title="로그인 실패"
+            footer={
+              <Button
+                className="w-full"
+                onClick={() => setShowErrorModal(false)}
+              >
+                확인
+              </Button>
+            }
+          >
+            잠시후에 다시 시도해 주세요.
+          </Modal>
+        )}
       </main>
     </>
   );
