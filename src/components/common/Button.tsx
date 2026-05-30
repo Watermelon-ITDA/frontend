@@ -1,7 +1,7 @@
-import type { ButtonHTMLAttributes } from "react";
-import { cn } from "../../utils/cn";
+import type { ButtonHTMLAttributes } from 'react';
+import { cn } from '../../utils/cn';
 
-type Variant = "primary" | "ghost";
+type Variant = 'primary' | 'ghost' | 'outline';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -9,17 +9,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseStyle =
-  "inline-flex items-center justify-center px-4 py-2 rounded-md text-sm transition-all duration-200 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none";
+  'inline-flex items-center justify-center px-4 py-2 rounded-md text-sm transition-all duration-200 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none';
 
 const variantStyle = {
-  primary:
-    "bg-primary text-white shadow-sm hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:scale-[0.98]",
-  ghost:
-    "bg-transparent text-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
+  primary: 'bg-primary text-white shadow-sm border-1 border-primary',
+  ghost: 'bg-transparent text-primary ',
+  outline: 'bg-white border-1 border-lightgray',
 };
 
 const Button = ({
-  variant = "primary",
+  variant = 'primary',
   loading = false,
   className,
   children,
@@ -31,7 +30,7 @@ const Button = ({
       disabled={props.disabled || loading}
       {...props}
     >
-      {loading ? "로딩중..." : children}
+      {loading ? '로딩중...' : children}
     </button>
   );
 };
