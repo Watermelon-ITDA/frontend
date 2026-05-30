@@ -4,6 +4,8 @@ import { loadKakaoScript } from '@/utils/loadMap';
 import { useEffect, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import KakaoMap from './components/KakaoMap';
+import BottomSheet from '@/components/common/BottomSheet';
+import defaultImg from '@/assets/icons/default-profile.png';
 
 const DEFAULT_POSITION = {
   lat: 35.8779,
@@ -11,6 +13,8 @@ const DEFAULT_POSITION = {
 };
 
 const HelpPage = () => {
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   const [currentPosition, setCurrentPosition] = useState(DEFAULT_POSITION);
@@ -130,6 +134,42 @@ const HelpPage = () => {
           pinInfo={mock}
         />
       )}
+
+      <Button
+        variant="outline"
+        className="absolute z-50 bottom-footer left-1/2 -translate-x-1/2 rounded-full shadow-lg"
+        onClick={() => setShowBottomSheet(true)}
+      >
+        목록 보기
+      </Button>
+
+      <BottomSheet
+        open={showBottomSheet}
+        onClose={() => setShowBottomSheet(false)}
+      >
+        <ul className="grid gap-3">
+          {mock.map((item) => (
+            <li key={item.id} className="p-4 flex items-center gap-3">
+              <img
+                className="w-[32px] h-[32px]"
+                src={item.profile}
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = defaultImg;
+                }}
+              />
+
+              <div>
+                <div className="flex items-end gap-2">
+                  <h3>{item.name}</h3>
+                  <small className="text-mediumgray">{item.location}</small>
+                </div>
+                <small className="text-darkgray">{item.content}</small>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </BottomSheet>
     </main>
   );
 };
