@@ -6,6 +6,7 @@ import './apis/core/interceptor.ts';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './apis/lib/queryClient.ts';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import { StrictMode } from 'react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
