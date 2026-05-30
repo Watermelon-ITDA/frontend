@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "./font.css";
+@import 'tailwindcss';
+@import './font.css';
 
 @theme {
   --color-primary: #ff6b6b;
@@ -9,6 +9,7 @@
   --color-darkgray: #696969;
 
   --spacing-header: 56px;
+  --spacing-footer: 72px;
 }
 
 html,
@@ -18,5 +19,5 @@ body,
   min-height: 100%;
 
   color: #1a202c;
-  font-family: "CookieRun", sans-serif;
+  font-family: 'CookieRun', sans-serif;
 }
