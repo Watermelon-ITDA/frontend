@@ -6,8 +6,8 @@ import SearchBar from './components/SearchBar';
 import KakaoMap from './components/KakaoMap';
 
 const DEFAULT_POSITION = {
-  lat: 37.5665,
-  lng: 126.978,
+  lat: 35.8779,
+  lng: 128.6286,
 };
 
 const HelpPage = () => {
@@ -59,6 +59,42 @@ const HelpPage = () => {
     initMap();
   }, []);
 
+  const mock = [
+    {
+      id: 0,
+      role: '여행자',
+      profile: '',
+      name: '박길동',
+      lat: 35.8779,
+      lng: 128.6286,
+      location: '대구 동구 동대구로 550, 3층',
+      content: '동대구역 출구를 못 찾겠어요',
+      score: null,
+    },
+    {
+      id: 1,
+      role: '여행자',
+      profile: '',
+      name: '홍길동',
+      lat: 35.8785,
+      lng: 128.631,
+      location: '대구 동구 동대구로 530',
+      content: '카드가 안 찍혀서 개찰구를 빠져나올 수가 없어요',
+      score: null,
+    },
+    {
+      id: 2,
+      role: '동행자',
+      profile: '',
+      name: '최길동',
+      lat: 35.8782,
+      lng: 128.6302,
+      location: '대구 동구 동대구로 530',
+      content: null,
+      score: 4.3,
+    },
+  ];
+
   return (
     <main className="relative h-screen w-full">
       <div className="absolute top-4 left-1/2 z-10 w-[90%] -translate-x-1/2 flex flex-col gap-2">
@@ -87,7 +123,12 @@ const HelpPage = () => {
       </div>
 
       {isMapLoaded && (
-        <KakaoMap currentPosition={currentPosition} places={places} />
+        <KakaoMap
+          filter={selectedBtn}
+          currentPosition={currentPosition}
+          places={places}
+          pinInfo={mock}
+        />
       )}
     </main>
   );
