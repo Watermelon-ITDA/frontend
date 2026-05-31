@@ -1,23 +1,35 @@
+import { authApi } from '@/apis/services/auth.api';
+import { useAuthStore } from '@/stores/authStore';
 import { jwtDecode } from 'jwt-decode';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const OAuthCallbackPage = () => {
   const navigate = useNavigate();
+  const { setUser } = useAuthStore();
+  const hasProcessed = useRef(false);
 
   useEffect(() => {
+    if (hasProcessed.current) return;
+    hasProcessed.current = true;
+
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
 
     if (token) {
       const decoded = jwtDecode<{ sub: string }>(token);
       localStorage.setItem('token', token);
-      localStorage.setItem('userId', decoded.sub);  // userId 저장
-      navigate('/role-select');
+      localStorage.setItem('userId', decoded.sub);
+      authApi.me()
+        .then((user) => {
+          setUser(user);
+          navigate('/');
+        })
+        .catch(() => navigate('/login'));
     } else {
       navigate('/login');
     }
-  }, [navigate]);
+  }, [navigate, setUser]);
 
   return (
     <div className='flex min-h-screen items-center justify-center'>

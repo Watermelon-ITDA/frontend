@@ -50,6 +50,7 @@ export default function ChatListPage() {
       <ul>
         {MOCK_ROOMS.map((room) => (
           <li
+            key={room.id}
             className="flex w-full items-center gap-3 px-4 py-4 hover:bg-lightgray/20 active:bg-lightgray/30"
             onClick={() => navigate(ROUTES.CHATROOM(room.id))}
           >
