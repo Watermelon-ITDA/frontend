@@ -14,13 +14,13 @@ import Header from './Header';
 const DefaultLayout = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === ROUTES.LOGIN;
-  const isCallbackPage = location.pathname.startsWith('/oauth2/callback');
+  const isCallbackPage = location.pathname.startsWith(ROUTES.OAUTH_CALLBACK);
 
   return (
     <>
       {!isLoginPage && !isCallbackPage && <Header />}
       <Routes>
-        <Route path='/oauth2/callback' element={<OAuthCallbackPage />} />
+        <Route path={ROUTES.OAUTH_CALLBACK} element={<OAuthCallbackPage />} />
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
         <Route path={ROUTES.HOME} element={<PrivateRoute><HomePage /></PrivateRoute>} />
         <Route path={ROUTES.HELP} element={<PrivateRoute><HelpPage /></PrivateRoute>} />
