@@ -152,7 +152,7 @@ const HelpPage = () => {
             <li key={item.id} className="p-4 flex items-center gap-3">
               <img
                 className="w-[32px] h-[32px]"
-                src={item.profile}
+                src={item.profile || defaultImg}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = defaultImg;
