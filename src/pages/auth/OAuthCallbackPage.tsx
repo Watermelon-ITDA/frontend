@@ -25,7 +25,7 @@ const OAuthCallbackPage = () => {
         .me()
         .then((user) => {
           setUser(user);
-          navigate(ROUTES.HOME);
+          navigate(ROUTES.LANGUAGE);
         })
         .catch(() => navigate(ROUTES.LOGIN));
     } else {
