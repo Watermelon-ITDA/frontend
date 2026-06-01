@@ -24,10 +24,11 @@ const LoginPage = () => {
 
         <div className="absolute bottom-40 left-7 right-7 grid text-center gap-4">
           <Button
-            className="w-full py-3 text-md flex justify-start gap-3"
+            variant="outline"
+            className="w-full py-3 px-5 text-md flex justify-start gap-3 rounded-xl"
             onClick={() => handleGoogleLogin()}
           >
-            <svg width="18" height="18" viewBox="0 0 18 18">
+            <svg width="20" height="20" viewBox="0 0 18 18">
               <path
                 fill="#4285F4"
                 d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 002.38-5.88c0-.57-.05-.66-.15-1.18z"
