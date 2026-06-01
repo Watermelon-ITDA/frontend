@@ -12,20 +12,21 @@ const LoginPage = () => {
   return (
     <>
       <main className="relative h-full px-7">
-        {/* 가운데 고정 */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-3 text-center">
-          <h1 className="text-4xl font-bold text-primary">잇다</h1>
+          <h1 className="text-4xl font-bold text-primary font-['CookieRun']">
+            잇다
+          </h1>
           <h2 className="text-2xl">여행중 막막한 순간</h2>
           <h2>
-            <span className="text-primary">잇다</span> 동행자에게 도움을
-            요청하고 ~~해보세요
+            <span className="text-primary font-['CookieRun']">잇다</span>{' '}
+            동행자에게 도움을 요청하고 ~~해보세요
           </h2>
         </div>
 
         <div className="absolute bottom-40 left-7 right-7 grid text-center gap-4">
           <Button
             variant="outline"
-            className="w-full py-3 px-5 text-md flex justify-start gap-3 rounded-xl"
+            className="w-full py-3 px-5 text-sm flex justify-start gap-3 rounded-xl"
             onClick={() => handleGoogleLogin()}
           >
             <svg width="20" height="20" viewBox="0 0 18 18">
