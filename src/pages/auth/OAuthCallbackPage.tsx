@@ -1,4 +1,5 @@
 import { authApi } from '@/apis/services/auth.api';
+import { ROUTES } from '@/constants/routes';
 import { useAuthStore } from '@/stores/authStore';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useRef } from 'react';
@@ -20,20 +21,21 @@ const OAuthCallbackPage = () => {
       const decoded = jwtDecode<{ sub: string }>(token);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', decoded.sub);
-      authApi.me()
+      authApi
+        .me()
         .then((user) => {
           setUser(user);
-          navigate('/');
+          navigate(ROUTES.HOME);
         })
-        .catch(() => navigate('/login'));
+        .catch(() => navigate(ROUTES.LOGIN));
     } else {
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   }, [navigate, setUser]);
 
   return (
-    <div className='flex min-h-screen items-center justify-center'>
-      <p className='text-gray-500'>로그인 중...</p>
+    <div className="flex min-h-screen items-center justify-center">
+      <p className="text-gray-500">로그인 중...</p>
     </div>
   );
 };
