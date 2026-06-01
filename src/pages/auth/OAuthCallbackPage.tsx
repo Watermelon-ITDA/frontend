@@ -1,4 +1,5 @@
 import { authApi } from '@/apis/services/auth.api';
+import { ROUTES } from '@/constants/routes';
 import { useAuthStore } from '@/stores/authStore';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useRef } from 'react';
@@ -20,14 +21,15 @@ const OAuthCallbackPage = () => {
       const decoded = jwtDecode<{ sub: string }>(token);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', decoded.sub);
+      const isNew = params.get('isNew') === 'true';
       authApi.me()
         .then((user) => {
           setUser(user);
-          navigate('/');
+          navigate(isNew ? ROUTES.LANGUAGE_SELECT : ROUTES.HOME);
         })
-        .catch(() => navigate('/login'));
+        .catch(() => navigate(ROUTES.LOGIN));
     } else {
-      navigate('/login');
+      navigate(ROUTES.LOGIN);
     }
   }, [navigate, setUser]);
 
