@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import { cn } from "../../utils/cn";
+import type { ReactNode } from 'react';
+import { cn } from '../../utils/cn';
 
 interface ModalProps {
   open: boolean;
@@ -22,11 +22,11 @@ const Modal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-100 flex items-center justify-center bg-black/40"
       onClick={onClose}
     >
       <div
-        className={cn("w-[320px] rounded-md bg-white shadow-lg", className)}
+        className={cn('w-[320px] rounded-md bg-white shadow-lg', className)}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
