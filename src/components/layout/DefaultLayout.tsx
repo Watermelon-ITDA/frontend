@@ -17,8 +17,12 @@ const DefaultLayout = () => {
   const isLoginPage = location.pathname === ROUTES.LOGIN;
   const isCallbackPage = location.pathname.startsWith(ROUTES.OAUTH_CALLBACK);
   const isLanguageSelectPage = location.pathname === ROUTES.LANGUAGE;
-  const hideHeader = isLoginPage || isCallbackPage || isLanguageSelectPage;
+  const isHelpPage = location.pathname === ROUTES.HELP;
+
+  const hideHeader =
+    isLoginPage || isCallbackPage || isLanguageSelectPage || isHelpPage;
   const hideFooter = isLoginPage || isCallbackPage || isLanguageSelectPage;
+
   return (
     <>
       {!hideHeader && <Header />}
