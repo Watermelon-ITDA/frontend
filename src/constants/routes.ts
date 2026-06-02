@@ -4,6 +4,7 @@ export const ROUTES = {
   LANGUAGE: '/language',
   HOME: '/',
   HELP: '/help',
+  HELP_REGIST: '/help/regist',
   CHAT: '/chat',
   CHATROOM_PATH: '/chat/:roomId',
   CHATROOM: (roomId: string) => `/chat/${roomId}`,

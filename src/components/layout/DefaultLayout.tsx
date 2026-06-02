@@ -11,6 +11,8 @@ import MyPage from '../../pages/mypage/MyPage';
 import Footer from './Footer';
 import Header from './Header';
 import LanguageSelectPage from '@/pages/auth/LanguageSelectPage';
+import BackHeader from './BackHeader';
+import TravlerRegistPage from '@/pages/help/TravlerRegistPage';
 
 const DefaultLayout = () => {
   const location = useLocation();
@@ -18,14 +20,22 @@ const DefaultLayout = () => {
   const isCallbackPage = location.pathname.startsWith(ROUTES.OAUTH_CALLBACK);
   const isLanguageSelectPage = location.pathname === ROUTES.LANGUAGE;
   const isHelpPage = location.pathname === ROUTES.HELP;
+  const isHelpRegist = location.pathname === ROUTES.HELP_REGIST;
 
   const hideHeader =
-    isLoginPage || isCallbackPage || isLanguageSelectPage || isHelpPage;
+    isLoginPage ||
+    isCallbackPage ||
+    isLanguageSelectPage ||
+    isHelpPage ||
+    isHelpRegist;
   const hideFooter = isLoginPage || isCallbackPage || isLanguageSelectPage;
+
+  const backHeader = isHelpRegist;
 
   return (
     <>
       {!hideHeader && <Header />}
+      {backHeader && <BackHeader />}
       <Routes>
         <Route path={ROUTES.OAUTH_CALLBACK} element={<OAuthCallbackPage />} />
         <Route path={ROUTES.LOGIN} element={<LoginPage />} />
@@ -43,6 +53,14 @@ const DefaultLayout = () => {
           element={
             <PrivateRoute>
               <HelpPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path={ROUTES.HELP_REGIST}
+          element={
+            <PrivateRoute>
+              <TravlerRegistPage />
             </PrivateRoute>
           }
         />
