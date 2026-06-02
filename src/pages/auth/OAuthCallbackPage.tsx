@@ -21,6 +21,7 @@ const OAuthCallbackPage = () => {
       const decoded = jwtDecode<{ sub: string }>(token);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', decoded.sub);
+      
       const isNew = params.get('isNew') === 'true';
       authApi.me()
         .then((user) => {
@@ -34,8 +35,8 @@ const OAuthCallbackPage = () => {
   }, [navigate, setUser]);
 
   return (
-    <div className='flex min-h-screen items-center justify-center'>
-      <p className='text-gray-500'>로그인 중...</p>
+    <div className="flex min-h-screen items-center justify-center">
+      <p className="text-gray-500">로그인 중...</p>
     </div>
   );
 };
