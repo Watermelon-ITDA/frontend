@@ -21,11 +21,12 @@ const OAuthCallbackPage = () => {
       const decoded = jwtDecode<{ sub: string }>(token);
       localStorage.setItem('token', token);
       localStorage.setItem('userId', decoded.sub);
-      authApi
-        .me()
+      
+      const isNew = params.get('isNew') === 'true';
+      authApi.me()
         .then((user) => {
           setUser(user);
-          navigate(ROUTES.LANGUAGE);
+          navigate(isNew ? ROUTES.LANGUAGE_SELECT : ROUTES.HOME);
         })
         .catch(() => navigate(ROUTES.LOGIN));
     } else {
