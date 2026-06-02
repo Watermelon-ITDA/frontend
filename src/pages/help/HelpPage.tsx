@@ -6,6 +6,10 @@ import SearchBar from './components/SearchBar';
 import KakaoMap from './components/KakaoMap';
 import BottomSheet from '@/components/common/BottomSheet';
 import defaultImg from '@/assets/icons/default-profile.png';
+import FloatingButton from '@/components/common/FloatingButton';
+import Modal from '@/components/common/Modal';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/constants/routes';
 
 const DEFAULT_POSITION = {
   lat: 35.8779,
@@ -13,6 +17,10 @@ const DEFAULT_POSITION = {
 };
 
 const HelpPage = () => {
+  const navigate = useNavigate();
+
+  const [floatingBtnClicked, setFloatingBtnClicked] = useState(false);
+
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -62,6 +70,13 @@ const HelpPage = () => {
 
     initMap();
   }, []);
+
+  const typeClicked = (type: number) => {
+    if (type === 0) {
+      navigate(ROUTES.HELP_REGIST);
+    } else if (type === 1) {
+    }
+  };
 
   const mock = [
     {
@@ -170,6 +185,32 @@ const HelpPage = () => {
           ))}
         </ul>
       </BottomSheet>
+
+      <FloatingButton
+        icon={<span>+</span>}
+        onClick={() => setFloatingBtnClicked(true)}
+      />
+
+      {floatingBtnClicked && (
+        <Modal
+          open={floatingBtnClicked}
+          onClose={() => setFloatingBtnClicked(false)}
+        >
+          <div className="grid gap-2 text-center">
+            어떤 유형으로 등록하시겠어요?
+            <Button className="w-full" onClick={() => typeClicked(0)}>
+              도움이 필요한 여행자
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => typeClicked(1)}
+            >
+              도움을 주는 동행자
+            </Button>
+          </div>
+        </Modal>
+      )}
     </main>
   );
 };
