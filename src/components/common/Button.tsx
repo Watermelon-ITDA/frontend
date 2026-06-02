@@ -9,7 +9,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const baseStyle =
-  'flex items-center justify-center px-4 py-2 rounded-md text-sm transition-all duration-200 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none';
+  'flex items-center justify-center px-4 py-3 rounded-md text-sm transition-all duration-200 hover:cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none';
 
 const variantStyle = {
   primary: 'bg-primary text-white border-1 border-primary',
