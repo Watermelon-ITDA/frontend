@@ -26,7 +26,10 @@ const Modal = ({
       onClick={onClose}
     >
       <div
-        className={cn('w-[320px] rounded-md bg-white shadow-lg', className)}
+        className={cn(
+          'w-[320px] rounded-md bg-white shadow-lg py-2',
+          className,
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
