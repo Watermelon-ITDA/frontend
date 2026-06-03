@@ -1,7 +1,6 @@
 import Button from '@/components/common/Button';
 import { usePlaceSearch } from '@/hooks/usePlaceSearch';
-import { loadKakaoScript } from '@/utils/loadMap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SearchBar from './components/SearchBar';
 import KakaoMap from './components/KakaoMap';
 import BottomSheet from '@/components/common/BottomSheet';
@@ -10,11 +9,9 @@ import FloatingButton from '@/components/common/FloatingButton';
 import Modal from '@/components/common/Modal';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '@/constants/routes';
-
-const DEFAULT_POSITION = {
-  lat: 35.8779,
-  lng: 128.6286,
-};
+import { useCurrentPosition } from '@/hooks/useCurrentPosition';
+import PlaceMarkers from './components/PlaceMarker';
+import HelpMarkers from './components/HelpMarker';
 
 const HelpPage = () => {
   const navigate = useNavigate();
@@ -23,53 +20,14 @@ const HelpPage = () => {
 
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
-
-  const [currentPosition, setCurrentPosition] = useState(DEFAULT_POSITION);
+  const { currentPosition, setCurrentPosition, isLoading } =
+    useCurrentPosition();
 
   const [keyword, setKeyword] = useState('');
 
   const [selectedBtn, setSelectedBtn] = useState(0);
 
   const { places, searchPlaces } = usePlaceSearch();
-
-  useEffect(() => {
-    const initMap = async () => {
-      await loadKakaoScript();
-
-      // 브라우저 GPS 지원 여부 확인
-      if (!navigator.geolocation) {
-        setIsMapLoaded(true);
-        return;
-      }
-
-      // 위치 권한 요청
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentPosition({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-
-          setIsMapLoaded(true);
-        },
-
-        // 위치 권한 거부 or 실패
-        () => {
-          setCurrentPosition(DEFAULT_POSITION);
-          setIsMapLoaded(true);
-        },
-
-        {
-          enableHighAccuracy: true,
-          timeout: 5000,
-          maximumAge: 0,
-        },
-      );
-    };
-
-    initMap();
-  }, []);
 
   const typeClicked = (type: number) => {
     if (type === 0) {
@@ -141,13 +99,11 @@ const HelpPage = () => {
         </div>
       </div>
 
-      {isMapLoaded && (
-        <KakaoMap
-          filter={selectedBtn}
-          currentPosition={currentPosition}
-          places={places}
-          pinInfo={mock}
-        />
+      {!isLoading && (
+        <KakaoMap center={currentPosition} height="100vh">
+          <PlaceMarkers places={places} />
+          <HelpMarkers pinInfo={mock} filter={selectedBtn} />
+        </KakaoMap>
       )}
 
       <Button
