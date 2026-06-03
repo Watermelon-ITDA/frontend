@@ -8,11 +8,19 @@ import KakaoMap from './components/KakaoMap';
 import CurrentLocationMarker from './components/CurrentLocationMarker';
 import { LocateFixed } from 'lucide-react';
 import Modal from '@/components/common/Modal';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import { helpApi } from '@/apis';
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '@/constants/routes';
 
 const TravlerRegistPage = () => {
+  const navigate = useNavigate();
+
+  const [submitLoading, setSubmitLoading] = useState(false);
+
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [selectedHelpType, setSelectedHelpType] = useState<number | null>(null);
+  const [selectedHelpType, setSelectedHelpType] = useState<string | null>(null);
 
   const [address, setAddress] = useState('');
 
@@ -43,10 +51,25 @@ const TravlerRegistPage = () => {
     searchPlaces(address, setCurrentPosition);
   };
 
-  const handleButton = () => {
+  const handleButton = async () => {
     if (selectedHelpType == null) {
       setModalOpen(true);
+      return;
     }
+    try {
+      setSubmitLoading(true);
+      await helpApi.saveTravlerInfo({
+        helpType: selectedHelpType,
+        address,
+        latitude: currentPosition.lat,
+        longitude: currentPosition.lng,
+      });
+      setSubmitLoading(false);
+      navigate(ROUTES.HELP);
+    } catch (e) {
+      console.log(e);
+    }
+    setSubmitLoading(false);
   };
 
   return (
@@ -60,15 +83,15 @@ const TravlerRegistPage = () => {
               <Button
                 variant="outline"
                 className={`w-full flex-col gap-1 rounded-xl px-2 py-3 ${
-                  item.id === selectedHelpType
+                  item.name === selectedHelpType
                     ? 'border-primary'
                     : 'border-lightgray'
                 }`}
                 onClick={() => {
-                  if (selectedHelpType === item.id) {
+                  if (selectedHelpType === item.name) {
                     setSelectedHelpType(null);
                   } else {
-                    setSelectedHelpType(item.id);
+                    setSelectedHelpType(item.name);
                   }
                 }}
               >
@@ -144,6 +167,13 @@ const TravlerRegistPage = () => {
       >
         <p className="text-center">⚠️ 도움 유형을 선택해 주세요</p>
       </Modal>
+
+      {submitLoading && (
+        <LoadingSpinner
+          overlay={true}
+          text="등록중입니다. 잠시만 기다려 주세요."
+        />
+      )}
     </main>
   );
 };

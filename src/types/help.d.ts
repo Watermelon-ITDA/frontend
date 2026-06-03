@@ -9,3 +9,10 @@ export interface PinInfo {
   content: string | null;
   score: number | null;
 }
+
+export interface RegistTravlerHelpRequest {
+  helpType: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+}
